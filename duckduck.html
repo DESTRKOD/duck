@@ -2,9 +2,8 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Загрузка</title>
+  <title>Приветствие</title>
 
-  <!-- Lottie -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 
   <style>
@@ -17,42 +16,107 @@
 
     body {
       background: linear-gradient(180deg, #0d47a1 0%, #1976d2 50%, #42a5f5 100%);
+      overflow: hidden;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      transition: opacity 0.6s ease;
     }
 
-    #duck {
-      width: 280px;
-      height: 280px;
+    .hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .visible {
+      opacity: 1;
+    }
+
+    .sticker {
+      width: 300px;
+      height: 300px;
     }
 
     .title {
       margin-top: 24px;
-      font-size: 34px;      /* крупно для телефона */
+      font-size: 36px;
       font-weight: 700;
-      color: #ffffff;
-      text-align: center;
-      letter-spacing: 0.6px;
-      text-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+      color: #fff;
+      text-shadow: 0 3px 12px rgba(0,0,0,.35);
+    }
+
+    /* КНОПКА */
+    .button {
+      margin-top: 32px;
+      padding: 16px 36px;
+      font-size: 22px;
+      font-weight: 600;
+      color: #0d47a1;
+      background: #ffffff;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0,0,0,.25);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0,0,0,.3);
+    }
+
+    .button:active {
+      transform: scale(.96);
     }
   </style>
 </head>
 <body>
 
-<div id="duck"></div>
-<div class="title">Загрузка…</div>
+<!-- ПРИВЕТСТВИЕ -->
+<div id="welcome" class="screen visible">
+  <div id="helloAnim" class="sticker"></div>
+  <div class="title">Добро пожаловать</div>
+  <button class="button" onclick="goToLoading()">Продолжить</button>
+</div>
+
+<!-- ЗАГРУЗКА -->
+<div id="loading" class="screen hidden">
+  <div id="duckAnim" class="sticker"></div>
+  <div class="title">Загрузка…</div>
+</div>
 
 <script>
+/* Анимации */
 lottie.loadAnimation({
-  container: document.getElementById('duck'),
+  container: document.getElementById('helloAnim'),
+  renderer: 'svg',
+  loop: true,
+  autoplay: true,
+  path: 'hello.json'
+});
+
+lottie.loadAnimation({
+  container: document.getElementById('duckAnim'),
   renderer: 'svg',
   loop: true,
   autoplay: true,
   path: 'duck.json'
 });
+
+/* Переход */
+function goToLoading() {
+  document.getElementById('welcome').classList.add('hidden');
+  setTimeout(() => {
+    document.getElementById('loading').classList.remove('hidden');
+    document.getElementById('loading').classList.add('visible');
+  }, 300);
+}
 </script>
 
 </body>
