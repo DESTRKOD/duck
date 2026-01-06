@@ -17,176 +17,190 @@ html, body {
   background: linear-gradient(180deg, #0b3c91 0%, #1565c0 55%, #42a5f5 100%);
 }
 
-/* ================= ЭКРАНЫ ================= */
-
+/* ===== ОБЩИЕ ЭКРАНЫ ===== */
 .screen {
   position: absolute;
   inset: 0;
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: transform .8s ease, opacity .8s ease;
 }
+.screen.active { display: flex; }
 
-.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.move-up {
-  transform: translateY(-120%);
-}
-
-/* ================= ЗАГРУЗКА / ИНТРО ================= */
-
+/* ===== СТИКЕР ===== */
 .sticker {
-  width: 280px;
-  height: 280px;
+  width: 260px;
+  height: 260px;
 }
 
-.center-title {
-  margin-top: 12px;
+.title {
+  margin-top: 14px;
   font-size: 30px;
   font-weight: 800;
   color: #fff;
   text-shadow: 0 4px 14px rgba(0,0,0,.35);
 }
 
-/* ================= МАГАЗИН ================= */
+/* ===== КНОПКА ===== */
+.button {
+  margin-top: 28px;
+  padding: 18px 44px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #0b3c91;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.35);
+  position: relative;
+  overflow: hidden;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.button.pressed {
+  transform: scale(0.94);
+  box-shadow: 0 6px 16px rgba(0,0,0,.35);
+}
 
+/* RIPPLE */
+.ripple {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background: rgba(13,71,161,.25);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  animation: ripple 600ms ease-out;
+}
+@keyframes ripple {
+  to {
+    transform: translate(-50%, -50%) scale(10);
+    opacity: 0;
+  }
+}
+
+/* ===== МЕНЮ ===== */
 .menu {
   position: absolute;
   inset: 0;
-  display: flex;
+  display: none;
   flex-direction: column;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .6s ease;
 }
+.menu.active { display: flex; }
 
-.menu.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* HEADER */
 .menu-header {
-  position: sticky;
-  top: 0;
-  padding: 16px 16px 12px;
-  font-size: 32px;
+  padding: 14px 16px;
+  font-size: 26px;
   font-weight: 900;
   color: #fff;
   background: linear-gradient(180deg, #0b3c91, #124fa5);
-  z-index: 10;
 }
 
-/* SCROLL */
 .menu-scroll {
   flex: 1;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
-/* GRID */
 .cards {
-  padding: 18px 16px 32px;
+  padding: 18px 16px 40px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 18px;
 }
 
-/* ================= CARD ================= */
-
+/* ===== КРАСОЧНАЯ КАРТОЧКА ===== */
 .shop-card {
-  height: 240px;                 /* КЛЮЧЕВОЕ ИЗМЕНЕНИЕ */
+  height: 240px;
   border-radius: 22px;
   overflow: hidden;
-  background: #ffffff;
+  background: linear-gradient(180deg, #ffffff, #f3f6ff);
   box-shadow: 0 14px 32px rgba(0,0,0,.30);
   display: flex;
   flex-direction: column;
 }
 
-/* TOP */
+/* ВЕРХ */
 .shop-card .top {
   flex: 0 0 65%;
-  background: linear-gradient(180deg, #2a2aff, #4f5dff);
+  background: linear-gradient(135deg, #5c6cff, #8b5cff);
 }
 
-/* BOTTOM */
+/* НИЗ */
 .shop-card .bottom {
   flex: 0 0 35%;
-  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 14px;
 }
 
-/* PLACEHOLDERS */
+/* ЗАГЛУШКИ */
 .shop-title {
-  width: 62%;
+  width: 60%;
   height: 16px;
-  background: #e0e0e0;
+  background: rgba(0,0,0,.15);
   border-radius: 8px;
 }
 
 .shop-price {
-  width: 68px;
-  height: 34px;
-  background: #000;
+  width: 64px;
+  height: 32px;
+  background: #0b3c91;
   border-radius: 10px;
 }
 </style>
 </head>
 <body>
 
-<!-- ЗАГРУЗКА -->
-<div id="loading" class="screen">
-  <div id="downloadAnim" class="sticker"></div>
-  <div class="center-title">Загрузка…</div>
+<!-- ПРИВЕТСТВИЕ -->
+<div id="screenHello" class="screen active">
+  <div id="animHello" class="sticker"></div>
+  <div class="title">Добро пожаловать</div>
+  <div class="button" id="continueBtn">Продолжить</div>
 </div>
 
-<!-- ГЛАВНОЕ МЕНЮ (ИНТРО) -->
-<div id="mainIntro" class="screen hidden">
-  <div id="mainAnim" class="sticker"></div>
-  <div class="center-title">Главное меню</div>
+<!-- ЗАГРУЗКА -->
+<div id="screenLoad" class="screen">
+  <div id="animDownload" class="sticker"></div>
+  <div class="title">Загрузка…</div>
+</div>
+
+<!-- ИНТРО -->
+<div id="screenIntro" class="screen">
+  <div id="animMain" class="sticker"></div>
+  <div class="title">Главное меню</div>
 </div>
 
 <!-- МАГАЗИН -->
-<div id="menu" class="menu">
+<div id="screenMenu" class="menu">
   <div class="menu-header">Главное меню</div>
   <div class="menu-scroll">
     <div class="cards">
       <!-- 10 КАРТОЧЕК -->
-      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
-      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
-      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
-      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
-      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
-      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
-      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
-      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
-      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
-      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
+      ${'<div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>'.repeat(10)}
     </div>
   </div>
 </div>
 
 <script>
 /* LOTTIE */
-lottie.loadAnimation({
-  container: document.getElementById('downloadAnim'),
+const animHello = lottie.loadAnimation({
+  container: document.getElementById('animHello'),
+  renderer: 'svg',
+  loop: true,
+  autoplay: true,
+  path: 'hello.json'
+});
+const animDownload = lottie.loadAnimation({
+  container: document.getElementById('animDownload'),
   renderer: 'svg',
   loop: true,
   autoplay: true,
   path: 'download.json'
 });
-
-lottie.loadAnimation({
-  container: document.getElementById('mainAnim'),
+const animMain = lottie.loadAnimation({
+  container: document.getElementById('animMain'),
   renderer: 'svg',
   loop: true,
   autoplay: true,
@@ -194,20 +208,38 @@ lottie.loadAnimation({
 });
 
 /* FLOW */
-setTimeout(() => {
-  document.getElementById('loading').classList.add('hidden');
-  document.getElementById('mainIntro').classList.remove('hidden');
-}, 2500);
+function show(id) {
+  document.querySelectorAll('.screen, .menu').forEach(el => el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
 
-setTimeout(() => {
-  const intro = document.getElementById('mainIntro');
-  intro.classList.add('move-up');
+/* BUTTON EFFECT */
+const btn = document.getElementById('continueBtn');
+
+btn.addEventListener('touchstart', () => btn.classList.add('pressed'));
+btn.addEventListener('touchend', () => btn.classList.remove('pressed'));
+
+btn.addEventListener('click', e => {
+  if (navigator.vibrate) navigator.vibrate(20);
+
+  const ripple = document.createElement('span');
+  ripple.className = 'ripple';
+  btn.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 600);
+
+  show('screenLoad');
+  animDownload.goToAndPlay(0, true);
 
   setTimeout(() => {
-    intro.classList.add('hidden');
-    document.getElementById('menu').classList.add('visible');
-  }, 800);
-}, 4500);
+    show('screenIntro');
+    animMain.goToAndPlay(0, true);
+
+    setTimeout(() => {
+      show('screenMenu');
+    }, 2000);
+
+  }, 2500);
+});
 </script>
 
 </body>
