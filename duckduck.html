@@ -1,125 +1,213 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Приветствие</title>
+<meta charset="UTF-8">
+<title>App</title>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-  <style>
-    html, body {
-      margin: 0;
-      width: 100%;
-      height: 100%;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(180deg, #0d47a1 0%, #1976d2 50%, #42a5f5 100%);
-      overflow: hidden;
-    }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 
-    .screen {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
+<style>
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(180deg, #0b3c91 0%, #1565c0 55%, #42a5f5 100%);
+}
 
-    .hidden {
-      opacity: 0;
-      pointer-events: none;
-      transform: scale(0.98);
-    }
+/* ================= ЭКРАНЫ ================= */
 
-    .visible {
-      opacity: 1;
-      pointer-events: auto;
-      transform: scale(1);
-    }
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform .8s ease, opacity .8s ease;
+}
 
-    .sticker {
-      width: 300px;
-      height: 300px;
-    }
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
 
-    .title {
-      margin-top: 24px;
-      font-size: 36px;
-      font-weight: 700;
-      color: #fff;
-      text-shadow: 0 3px 12px rgba(0,0,0,.35);
-    }
+.move-up {
+  transform: translateY(-120%);
+}
 
-    /* КНОПКА */
-    .button {
-      margin-top: 32px;
-      padding: 18px 40px;
-      font-size: 22px;
-      font-weight: 600;
-      color: #0d47a1;
-      background: #ffffff;
-      border-radius: 14px;        /* прямоугольная */
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 10px 28px rgba(0,0,0,.25);
-      transition: transform .15s ease, box-shadow .15s ease;
-      touch-action: manipulation;
-    }
+/* ================= ЗАГРУЗКА / ИНТРО ================= */
 
-    /* МЯГКОЕ НАЖАТИЕ */
-    .button:active {
-      transform: scale(0.94);
-      box-shadow: 0 6px 16px rgba(0,0,0,.25);
-    }
-  </style>
+.sticker {
+  width: 280px;
+  height: 280px;
+}
+
+.center-title {
+  margin-top: 12px;
+  font-size: 30px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 4px 14px rgba(0,0,0,.35);
+}
+
+/* ================= МАГАЗИН ================= */
+
+.menu {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .6s ease;
+}
+
+.menu.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* HEADER */
+.menu-header {
+  position: sticky;
+  top: 0;
+  padding: 16px 16px 12px;
+  font-size: 32px;
+  font-weight: 900;
+  color: #fff;
+  background: linear-gradient(180deg, #0b3c91, #124fa5);
+  z-index: 10;
+}
+
+/* SCROLL */
+.menu-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* GRID */
+.cards {
+  padding: 18px 16px 32px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+/* ================= CARD ================= */
+
+.shop-card {
+  height: 240px;                 /* КЛЮЧЕВОЕ ИЗМЕНЕНИЕ */
+  border-radius: 22px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 14px 32px rgba(0,0,0,.30);
+  display: flex;
+  flex-direction: column;
+}
+
+/* TOP */
+.shop-card .top {
+  flex: 0 0 65%;
+  background: linear-gradient(180deg, #2a2aff, #4f5dff);
+}
+
+/* BOTTOM */
+.shop-card .bottom {
+  flex: 0 0 35%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+}
+
+/* PLACEHOLDERS */
+.shop-title {
+  width: 62%;
+  height: 16px;
+  background: #e0e0e0;
+  border-radius: 8px;
+}
+
+.shop-price {
+  width: 68px;
+  height: 34px;
+  background: #000;
+  border-radius: 10px;
+}
+</style>
 </head>
 <body>
 
-<!-- ПРИВЕТСТВИЕ -->
-<div id="welcome" class="screen visible">
-  <div id="helloAnim" class="sticker"></div>
-  <div class="title">Добро пожаловать</div>
-  <button class="button" onclick="goToLoading()">Продолжить</button>
+<!-- ЗАГРУЗКА -->
+<div id="loading" class="screen">
+  <div id="downloadAnim" class="sticker"></div>
+  <div class="center-title">Загрузка…</div>
 </div>
 
-<!-- ЗАГРУЗКА -->
-<div id="loading" class="screen hidden">
-  <div id="duckAnim" class="sticker"></div>
-  <div class="title">Загрузка…</div>
+<!-- ГЛАВНОЕ МЕНЮ (ИНТРО) -->
+<div id="mainIntro" class="screen hidden">
+  <div id="mainAnim" class="sticker"></div>
+  <div class="center-title">Главное меню</div>
+</div>
+
+<!-- МАГАЗИН -->
+<div id="menu" class="menu">
+  <div class="menu-header">Главное меню</div>
+  <div class="menu-scroll">
+    <div class="cards">
+      <!-- 10 КАРТОЧЕК -->
+      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
+      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
+      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
+      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
+      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
+      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
+      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
+      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
+      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
+      <div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>
+    </div>
+  </div>
 </div>
 
 <script>
-/* Анимации */
+/* LOTTIE */
 lottie.loadAnimation({
-  container: document.getElementById('helloAnim'),
+  container: document.getElementById('downloadAnim'),
   renderer: 'svg',
   loop: true,
   autoplay: true,
-  path: 'hello.json'
+  path: 'download.json'
 });
 
 lottie.loadAnimation({
-  container: document.getElementById('duckAnim'),
+  container: document.getElementById('mainAnim'),
   renderer: 'svg',
   loop: true,
   autoplay: true,
-  path: 'duck.json'
+  path: 'main.json'
 });
 
-/* Переход */
-function goToLoading() {
-  const welcome = document.getElementById('welcome');
-  const loading = document.getElementById('loading');
+/* FLOW */
+setTimeout(() => {
+  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('mainIntro').classList.remove('hidden');
+}, 2500);
 
-  welcome.classList.remove('visible');
-  welcome.classList.add('hidden');
+setTimeout(() => {
+  const intro = document.getElementById('mainIntro');
+  intro.classList.add('move-up');
 
   setTimeout(() => {
-    loading.classList.remove('hidden');
-    loading.classList.add('visible');
-  }, 300);
-}
+    intro.classList.add('hidden');
+    document.getElementById('menu').classList.add('visible');
+  }, 800);
+}, 4500);
 </script>
 
 </body>
