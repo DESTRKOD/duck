@@ -16,7 +16,7 @@
     }
 
     body {
-      background: linear-gradient(180deg, #6ec6ff 0%, #b3e5ff 100%);
+      background: linear-gradient(180deg, #0d47a1 0%, #1976d2 50%, #42a5f5 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -24,27 +24,26 @@
       overflow: hidden;
     }
 
-    .title {
-      position: absolute;
-      top: 40px;
-      font-size: 28px;
-      font-weight: 600;
-      color: #ffffff;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      letter-spacing: 0.5px;
+    #duck {
+      width: 280px;
+      height: 280px;
     }
 
-    #duck {
-      width: 300px;
-      height: 300px;
+    .title {
+      margin-top: 24px;
+      font-size: 34px;      /* крупно для телефона */
+      font-weight: 700;
+      color: #ffffff;
+      text-align: center;
+      letter-spacing: 0.6px;
+      text-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
     }
   </style>
 </head>
 <body>
 
-<div class="title">Загрузка…</div>
-
 <div id="duck"></div>
+<div class="title">Загрузка…</div>
 
 <script>
 lottie.loadAnimation({
