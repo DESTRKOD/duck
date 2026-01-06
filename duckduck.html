@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Shop</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 
 <style>
@@ -16,7 +15,7 @@ html, body {
   background: linear-gradient(180deg, #0b3c91 0%, #1565c0 55%, #42a5f5 100%);
 }
 
-/* ===== ЭКРАНЫ ===== */
+/* ===== ЭКРАНЫ (с анимацией улёта) ===== */
 .screen, .menu {
   position: absolute;
   inset: 0;
@@ -30,22 +29,17 @@ html, body {
   pointer-events: none;
   transition: opacity .35s ease, transform .35s ease;
 }
-
 .screen.active, .menu.active {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
 }
-
 .screen.leaving, .menu.leaving {
   opacity: 0;
   transform: translateY(-40px);
 }
 
-.sticker {
-  width: 260px;
-  height: 260px;
-}
+.sticker { width: 260px; height: 260px; }
 
 .title {
   margin-top: 14px;
@@ -55,7 +49,7 @@ html, body {
   text-align: center;
 }
 
-/* ===== КНОПКА ===== */
+/* ===== КНОПКА ПРОДОЛЖИТЬ ===== */
 .button {
   margin-top: 28px;
   padding: 20px 56px;
@@ -74,9 +68,7 @@ html, body {
 }
 
 /* ===== МЕНЮ ===== */
-.menu {
-  justify-content: flex-start;
-}
+.menu { justify-content: flex-start; }
 
 .menu-header {
   width: 100%;
@@ -112,6 +104,7 @@ html, body {
   flex-direction: column;
 }
 
+/* 🎁 ПОДАРОК */
 .gift {
   position: absolute;
   top: 10px;
@@ -120,27 +113,34 @@ html, body {
   height: 32px;
   z-index: 2;
 }
+.gift img { width: 100%; height: 100%; }
 
-.gift img {
-  width: 100%;
-  height: 100%;
-}
-
+/* ===== ВЕРХ (КАРТИНКА) ===== */
 .shop-top {
   flex: 0 0 60%;
   background: linear-gradient(180deg, #1b3fd6 0%, #2f6bff 100%);
   display: flex;
   align-items: center;
   justify-content: center;
+
+  padding: 12px;          /* отступы именно тут */
+  box-sizing: border-box;
+  overflow: hidden;       /* на всякий случай */
 }
 
+/* ✅ ФИКС: никогда не обрезает, всегда по центру */
 .shop-top img {
-  max-width: 80%;
-  max-height: 80%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
 }
 
+/* ===== НИЗ ===== */
 .shop-bottom {
   flex: 0 0 40%;
+  background: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -151,31 +151,31 @@ html, body {
 .shop-name {
   font-size: 15px;
   font-weight: 700;
+  color: #000;
   line-height: 1.2;
 }
 
+/* ===== КНОПКА ПОКУПКИ ===== */
 .shop-buy {
-  min-width: 120px;
-  height: 42px;
+  min-width: 140px;
+  height: 44px;
   background: #000;
   border-radius: 12px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 0 10px;
+  justify-content: center; /* центрируем и иконку и цену */
+  gap: 8px;
+  padding: 0 12px;
   flex-shrink: 0;
 }
-
 .shop-buy svg {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   fill: #fff;
 }
-
 .shop-price {
   color: #fff;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 800;
   white-space: nowrap;
 }
@@ -184,115 +184,73 @@ html, body {
 @media (max-width: 480px) {
   .cards {
     grid-template-columns: 1fr;
-    padding: 14px 14px 34px;
     gap: 14px;
+    padding: 14px 14px 34px;
   }
-
-  .shop-card {
-    height: 260px;
-  }
-
-  .shop-name {
-    font-size: 16px;
-  }
-
-  .shop-buy {
-    min-width: 140px;
-    height: 44px;
-  }
-
-  .shop-price {
-    font-size: 15px;
-  }
+  .shop-card { height: 260px; }
+  .shop-name { font-size: 16px; }
+  .shop-buy { min-width: 150px; height: 46px; }
+  .shop-price { font-size: 15px; }
 }
 </style>
 </head>
 <body>
 
-<!-- HELLO -->
+<!-- ПРИВЕТСТВИЕ -->
 <div id="hello" class="screen active">
   <div id="animHello" class="sticker"></div>
   <div class="title">Добро пожаловать</div>
   <div class="button" id="continueBtn">Продолжить</div>
 </div>
 
-<!-- LOAD -->
+<!-- ЗАГРУЗКА -->
 <div id="load" class="screen">
   <div id="animDownload" class="sticker"></div>
   <div class="title">Загрузка…</div>
 </div>
 
-<!-- INTRO -->
+<!-- ИНТРО -->
 <div id="intro" class="screen">
   <div id="animMain" class="sticker"></div>
   <div class="title">Главное меню</div>
 </div>
 
-<!-- MENU -->
+<!-- МАГАЗИН -->
 <div id="menu" class="menu">
   <div class="menu-header">Главное меню</div>
   <div class="menu-scroll">
-    <div class="cards">
-
-      <!-- товары -->
-      <script>
-        const items = [
-          ["30 кристаллов","200 ₽"],
-          ["80 кристаллов","550 ₽"],
-          ["170 кристаллов","950 ₽"],
-          ["360 кристаллов","1900 ₽"],
-          ["950 кристаллов","4600 ₽"],
-          ["2000 кристаллов","9000 ₽"],
-          ["Brawl Pass","900 ₽"],
-          ["Brawl Pass Plus","1200 ₽"],
-          ["Улучшение до БП+","550 ₽"],
-          ["Brawl Pass","950 ₽",true],
-          ["Brawl Pass Plus","1250 ₽",true],
-          ["Pro Pass","2200 ₽"]
-        ];
-        document.write(items.map(i=>`
-        <div class="shop-card">
-          ${i[2]?'<div class="gift"><img src="https://i.imgur.com/placeholder.png"></div>':''}
-          <div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div>
-          <div class="shop-bottom">
-            <div class="shop-name">${i[0]}</div>
-            <div class="shop-buy">
-              <svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg>
-              <div class="shop-price">${i[1]}</div>
-            </div>
-          </div>
-        </div>`).join(""));
-      </script>
-
-    </div>
+    <div class="cards" id="cards"></div>
   </div>
 </div>
 
 <script>
+/* lottie */
 lottie.loadAnimation({ container: animHello, renderer:'svg', loop:true, autoplay:true, path:'hello.json' });
 lottie.loadAnimation({ container: animDownload, renderer:'svg', loop:true, autoplay:true, path:'download.json' });
 lottie.loadAnimation({ container: animMain, renderer:'svg', loop:true, autoplay:true, path:'main.json' });
 
+/* Анимационное переключение экранов */
 function show(id){
   const ids = ['hello','load','intro','menu'];
-  const current = ids.map(x=>document.getElementById(x)).find(e=>e.classList.contains('active'));
+  const current = ids.map(x=>document.getElementById(x)).find(el => el.classList.contains('active'));
   const next = document.getElementById(id);
 
   if (current && current !== next) {
     current.classList.add('leaving');
-    setTimeout(()=>{
-      ids.forEach(x=>{
-        const el=document.getElementById(x);
+    setTimeout(() => {
+      ids.forEach(x => {
+        const el = document.getElementById(x);
         el.classList.remove('active','leaving');
       });
       next.classList.add('active');
-    },350);
+    }, 350);
   } else {
-    ids.forEach(x=>document.getElementById(x).classList.remove('active','leaving'));
+    ids.forEach(x => document.getElementById(x).classList.remove('active','leaving'));
     next.classList.add('active');
   }
 }
 
+/* Кнопка */
 const btn = document.getElementById('continueBtn');
 btn.addEventListener('pointerdown',()=>btn.classList.add('pressed'));
 btn.addEventListener('pointerup',()=>btn.classList.remove('pressed'));
@@ -304,6 +262,38 @@ btn.addEventListener('click',()=>{
     setTimeout(()=>show('menu'),2000);
   },2500);
 });
+
+/* Товары (вставил твои ссылки для кристаллов) */
+const items = [
+  ["30 кристаллов","200 ₽","https://i.imgur.com/s4K0WIP.png"],
+  ["80 кристаллов","550 ₽","https://i.imgur.com/XbnZKDb.png"],
+  ["170 кристаллов","950 ₽","https://i.imgur.com/X0JCmMQ.png"],
+  ["360 кристаллов","1900 ₽","https://i.imgur.com/7z8z9Rw.png"],
+  ["950 кристаллов","4600 ₽","https://i.imgur.com/zzBuIxF.png"],
+  ["2000 кристаллов","9000 ₽","https://i.imgur.com/FTVnycE.png"],
+
+  /* Остальные пока оставил placeholder — просто замени на свои ссылки */
+  ["Brawl Pass","900 ₽","https://i.imgur.com/FaFAL6l.png"],
+  ["Brawl Pass Plus","1200 ₽","https://i.imgur.com/21InnIc.png"],
+  ["Улучшение до БП+","550 ₽","https://i.imgur.com/yhaR5Ho_d.webp?maxwidth=760&fidelity=grand"],
+  ["Brawl Pass","950 ₽","https://i.imgur.com/FaFAL6l.png", true],
+  ["Brawl Pass Plus","1250 ₽","https://i.imgur.com/21InnIc.png", true],
+  ["Pro Pass","2200 ₽","https://i.imgur.com/6808Xnp.png"]
+];
+
+document.getElementById("cards").innerHTML = items.map(i => `
+  <div class="shop-card">
+    ${i[3] ? '<div class="gift"><img src="https://i.imgur.com/Tdajl7F.png" alt=""></div>' : ''}
+    <div class="shop-top"><img src="${i[2]}" alt=""></div>
+    <div class="shop-bottom">
+      <div class="shop-name">${i[0]}</div>
+      <div class="shop-buy">
+        <svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg>
+        <div class="shop-price">${i[1]}</div>
+      </div>
+    </div>
+  </div>
+`).join("");
 </script>
 
 </body>
