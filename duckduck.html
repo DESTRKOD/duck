@@ -40,7 +40,7 @@ html, body {
   text-align: center;
 }
 
-/* ===== КНОПКА ПРОДОЛЖИТЬ ===== */
+/* ===== КНОПКА ===== */
 .button {
   margin-top: 28px;
   padding: 20px 56px;
@@ -93,7 +93,6 @@ html, body {
   flex-direction: column;
 }
 
-/* 🎁 ПОДАРОК (IMG) */
 .gift {
   position: absolute;
   top: 10px;
@@ -107,7 +106,6 @@ html, body {
   height: 100%;
 }
 
-/* ВЕРХ — ТЁМНЫЙ СИНИЙ ГРАДИЕНТ */
 .shop-top {
   flex: 0 0 60%;
   background: linear-gradient(180deg, #1b3fd6 0%, #2f6bff 100%);
@@ -121,7 +119,6 @@ html, body {
   object-fit: contain;
 }
 
-/* НИЗ */
 .shop-bottom {
   flex: 0 0 40%;
   background: #fff;
@@ -139,7 +136,6 @@ html, body {
   line-height: 1.2;
 }
 
-/* КНОПКА ПОКУПКИ */
 .shop-buy {
   min-width: 120px;
   height: 42px;
@@ -163,180 +159,80 @@ html, body {
   font-weight: 800;
   white-space: nowrap;
 }
+
+/* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
+@media (max-width: 480px) {
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 14px 14px 34px;
+  }
+
+  .shop-card {
+    height: 260px;
+  }
+
+  .shop-name {
+    font-size: 16px;
+  }
+
+  .shop-buy {
+    min-width: 140px;
+    height: 44px;
+  }
+
+  .shop-price {
+    font-size: 15px;
+  }
+}
 </style>
 </head>
 <body>
 
-<!-- ПРИВЕТСТВИЕ -->
 <div id="hello" class="screen active">
   <div id="animHello" class="sticker"></div>
   <div class="title">Добро пожаловать</div>
   <div class="button" id="continueBtn">Продолжить</div>
 </div>
 
-<!-- ЗАГРУЗКА -->
 <div id="load" class="screen">
   <div id="animDownload" class="sticker"></div>
   <div class="title">Загрузка…</div>
 </div>
 
-<!-- ИНТРО -->
 <div id="intro" class="screen">
   <div id="animMain" class="sticker"></div>
   <div class="title">Главное меню</div>
 </div>
 
-<!-- МАГАЗИН -->
 <div id="menu" class="menu">
   <div class="menu-header">Главное меню</div>
   <div class="menu-scroll">
     <div class="cards">
 
-      <!-- 30 -->
-      <div class="shop-card">
-        <div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div>
-        <div class="shop-bottom">
-          <div class="shop-name">30 кристаллов</div>
-          <div class="shop-buy">
-            <svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg>
-            <div class="shop-price">200 ₽</div>
-          </div>
-        </div>
-      </div>
+      <div class="shop-card"><div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div><div class="shop-bottom"><div class="shop-name">30 кристаллов</div><div class="shop-buy"><svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg><div class="shop-price">200 ₽</div></div></div></div>
 
-      <!-- 80 -->
-      <div class="shop-card">
-        <div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div>
-        <div class="shop-bottom">
-          <div class="shop-name">80 кристаллов</div>
-          <div class="shop-buy">
-            <svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg>
-            <div class="shop-price">550 ₽</div>
-          </div>
-        </div>
-      </div>
+      <div class="shop-card"><div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div><div class="shop-bottom"><div class="shop-name">80 кристаллов</div><div class="shop-buy"><svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg><div class="shop-price">550 ₽</div></div></div></div>
 
-      <!-- 170 -->
-      <div class="shop-card">
-        <div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div>
-        <div class="shop-bottom">
-          <div class="shop-name">170 кристаллов</div>
-          <div class="shop-buy">
-            <svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg>
-            <div class="shop-price">950 ₽</div>
-          </div>
-        </div>
-      </div>
+      <div class="shop-card"><div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div><div class="shop-bottom"><div class="shop-name">170 кристаллов</div><div class="shop-buy"><svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg><div class="shop-price">950 ₽</div></div></div></div>
 
-      <!-- 360 -->
-      <div class="shop-card">
-        <div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div>
-        <div class="shop-bottom">
-          <div class="shop-name">360 кристаллов</div>
-          <div class="shop-buy">
-            <svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg>
-            <div class="shop-price">1900 ₽</div>
-          </div>
-        </div>
-      </div>
+      <div class="shop-card"><div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div><div class="shop-bottom"><div class="shop-name">360 кристаллов</div><div class="shop-buy"><svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg><div class="shop-price">1900 ₽</div></div></div></div>
 
-      <!-- 950 -->
-      <div class="shop-card">
-        <div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div>
-        <div class="shop-bottom">
-          <div class="shop-name">950 кристаллов</div>
-          <div class="shop-buy">
-            <svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg>
-            <div class="shop-price">4600 ₽</div>
-          </div>
-        </div>
-      </div>
+      <div class="shop-card"><div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div><div class="shop-bottom"><div class="shop-name">950 кристаллов</div><div class="shop-buy"><svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg><div class="shop-price">4600 ₽</div></div></div></div>
 
-      <!-- 2000 -->
-      <div class="shop-card">
-        <div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div>
-        <div class="shop-bottom">
-          <div class="shop-name">2000 кристаллов</div>
-          <div class="shop-buy">
-            <svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg>
-            <div class="shop-price">9000 ₽</div>
-          </div>
-        </div>
-      </div>
+      <div class="shop-card"><div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div><div class="shop-bottom"><div class="shop-name">2000 кристаллов</div><div class="shop-buy"><svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg><div class="shop-price">9000 ₽</div></div></div></div>
 
-      <!-- Brawl Pass -->
-      <div class="shop-card">
-        <div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div>
-        <div class="shop-bottom">
-          <div class="shop-name">Brawl Pass</div>
-          <div class="shop-buy">
-            <svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg>
-            <div class="shop-price">900 ₽</div>
-          </div>
-        </div>
-      </div>
+      <div class="shop-card"><div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div><div class="shop-bottom"><div class="shop-name">Brawl Pass</div><div class="shop-buy"><svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg><div class="shop-price">900 ₽</div></div></div></div>
 
-      <!-- Brawl Pass Plus -->
-      <div class="shop-card">
-        <div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div>
-        <div class="shop-bottom">
-          <div class="shop-name">Brawl Pass Plus</div>
-          <div class="shop-buy">
-            <svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg>
-            <div class="shop-price">1200 ₽</div>
-          </div>
-        </div>
-      </div>
+      <div class="shop-card"><div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div><div class="shop-bottom"><div class="shop-name">Brawl Pass Plus</div><div class="shop-buy"><svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg><div class="shop-price">1200 ₽</div></div></div></div>
 
-      <!-- BP -> BP+ -->
-      <div class="shop-card">
-        <div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div>
-        <div class="shop-bottom">
-          <div class="shop-name">BP → BP+</div>
-          <div class="shop-buy">
-            <svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg>
-            <div class="shop-price">550 ₽</div>
-          </div>
-        </div>
-      </div>
+      <div class="shop-card"><div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div><div class="shop-bottom"><div class="shop-name">Улучшение до БП+</div><div class="shop-buy"><svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg><div class="shop-price">550 ₽</div></div></div></div>
 
-      <!-- Gift Brawl Pass -->
-      <div class="shop-card">
-        <div class="gift"><img src="https://i.imgur.com/placeholder.png"></div>
-        <div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div>
-        <div class="shop-bottom">
-          <div class="shop-name">Brawl Pass</div>
-          <div class="shop-buy">
-            <svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg>
-            <div class="shop-price">950 ₽</div>
-          </div>
-        </div>
-      </div>
+      <div class="shop-card"><div class="gift"><img src="https://i.imgur.com/placeholder.png"></div><div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div><div class="shop-bottom"><div class="shop-name">Brawl Pass</div><div class="shop-buy"><svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg><div class="shop-price">950 ₽</div></div></div></div>
 
-      <!-- Gift Brawl Pass Plus -->
-      <div class="shop-card">
-        <div class="gift"><img src="https://i.imgur.com/placeholder.png"></div>
-        <div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div>
-        <div class="shop-bottom">
-          <div class="shop-name">Brawl Pass Plus</div>
-          <div class="shop-buy">
-            <svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg>
-            <div class="shop-price">1250 ₽</div>
-          </div>
-        </div>
-      </div>
+      <div class="shop-card"><div class="gift"><img src="https://i.imgur.com/placeholder.png"></div><div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div><div class="shop-bottom"><div class="shop-name">Brawl Pass Plus</div><div class="shop-buy"><svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg><div class="shop-price">1250 ₽</div></div></div></div>
 
-      <!-- Pro Pass -->
-      <div class="shop-card">
-        <div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div>
-        <div class="shop-bottom">
-          <div class="shop-name">Pro Pass</div>
-          <div class="shop-buy">
-            <svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg>
-            <div class="shop-price">2200 ₽</div>
-          </div>
-        </div>
-      </div>
+      <div class="shop-card"><div class="shop-top"><img src="https://i.imgur.com/placeholder.png"></div><div class="shop-bottom"><div class="shop-name">Pro Pass</div><div class="shop-buy"><svg viewBox="0 0 24 24"><path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/></svg><div class="shop-price">2200 ₽</div></div></div></div>
 
     </div>
   </div>
