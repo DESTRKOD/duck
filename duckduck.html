@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>App</title>
+<title>Shop</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
@@ -61,25 +61,6 @@ html, body {
   box-shadow: 0 6px 16px rgba(0,0,0,.35);
 }
 
-/* RIPPLE */
-.ripple {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 20px;
-  height: 20px;
-  background: rgba(13,71,161,.25);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  animation: ripple 600ms ease-out;
-}
-@keyframes ripple {
-  to {
-    transform: translate(-50%, -50%) scale(10);
-    opacity: 0;
-  }
-}
-
 /* ===== МЕНЮ ===== */
 .menu {
   position: absolute;
@@ -109,8 +90,9 @@ html, body {
   gap: 18px;
 }
 
-/* ===== КРАСОЧНАЯ КАРТОЧКА ===== */
+/* ===== КАРТОЧКА ТОВАРА ===== */
 .shop-card {
+  position: relative;
   height: 240px;
   border-radius: 22px;
   overflow: hidden;
@@ -120,33 +102,55 @@ html, body {
   flex-direction: column;
 }
 
+/* ПОДАРОК */
+.gift {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ff3d3d;
+  color: #fff;
+  font-size: 18px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.3);
+}
+
 /* ВЕРХ */
 .shop-card .top {
-  flex: 0 0 65%;
+  flex: 0 0 60%;
   background: linear-gradient(135deg, #5c6cff, #8b5cff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
 }
 
 /* НИЗ */
 .shop-card .bottom {
-  flex: 0 0 35%;
+  flex: 0 0 40%;
+  padding: 12px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
-  padding: 0 14px;
 }
 
-/* ЗАГЛУШКИ */
-.shop-title {
-  width: 60%;
-  height: 16px;
-  background: rgba(0,0,0,.15);
-  border-radius: 8px;
+.shop-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0b3c91;
 }
 
 .shop-price {
-  width: 64px;
-  height: 32px;
+  align-self: flex-start;
   background: #0b3c91;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  padding: 6px 10px;
   border-radius: 10px;
 }
 </style>
@@ -177,8 +181,107 @@ html, body {
   <div class="menu-header">Главное меню</div>
   <div class="menu-scroll">
     <div class="cards">
-      <!-- 10 КАРТОЧЕК -->
-      ${'<div class="shop-card"><div class="top"></div><div class="bottom"><div class="shop-title"></div><div class="shop-price"></div></div></div>'.repeat(10)}
+
+      <!-- КРИСТАЛЛЫ -->
+      <div class="shop-card">
+        <div class="top">30 кристаллов</div>
+        <div class="bottom">
+          <div class="shop-name">Набор кристаллов</div>
+          <div class="shop-price">200 ₽</div>
+        </div>
+      </div>
+
+      <div class="shop-card">
+        <div class="top">80 кристаллов</div>
+        <div class="bottom">
+          <div class="shop-name">Набор кристаллов</div>
+          <div class="shop-price">550 ₽</div>
+        </div>
+      </div>
+
+      <div class="shop-card">
+        <div class="top">170 кристаллов</div>
+        <div class="bottom">
+          <div class="shop-name">Набор кристаллов</div>
+          <div class="shop-price">950 ₽</div>
+        </div>
+      </div>
+
+      <div class="shop-card">
+        <div class="top">360 кристаллов</div>
+        <div class="bottom">
+          <div class="shop-name">Набор кристаллов</div>
+          <div class="shop-price">1900 ₽</div>
+        </div>
+      </div>
+
+      <div class="shop-card">
+        <div class="top">950 кристаллов</div>
+        <div class="bottom">
+          <div class="shop-name">Набор кристаллов</div>
+          <div class="shop-price">4600 ₽</div>
+        </div>
+      </div>
+
+      <div class="shop-card">
+        <div class="top">2000 кристаллов</div>
+        <div class="bottom">
+          <div class="shop-name">Набор кристаллов</div>
+          <div class="shop-price">9000 ₽</div>
+        </div>
+      </div>
+
+      <!-- PASSES -->
+      <div class="shop-card">
+        <div class="top">Brawl Pass</div>
+        <div class="bottom">
+          <div class="shop-name">Боевой пропуск</div>
+          <div class="shop-price">900 ₽</div>
+        </div>
+      </div>
+
+      <div class="shop-card">
+        <div class="top">Brawl Pass Plus</div>
+        <div class="bottom">
+          <div class="shop-name">Боевой пропуск+</div>
+          <div class="shop-price">1200 ₽</div>
+        </div>
+      </div>
+
+      <div class="shop-card">
+        <div class="top">BP → BP+</div>
+        <div class="bottom">
+          <div class="shop-name">Улучшение пропуска</div>
+          <div class="shop-price">550 ₽</div>
+        </div>
+      </div>
+
+      <div class="shop-card">
+        <div class="gift">🎁</div>
+        <div class="top">Brawl Pass</div>
+        <div class="bottom">
+          <div class="shop-name">Подарком</div>
+          <div class="shop-price">950 ₽</div>
+        </div>
+      </div>
+
+      <div class="shop-card">
+        <div class="gift">🎁</div>
+        <div class="top">Brawl Pass Plus</div>
+        <div class="bottom">
+          <div class="shop-name">Подарком</div>
+          <div class="shop-price">1250 ₽</div>
+        </div>
+      </div>
+
+      <div class="shop-card">
+        <div class="top">Pro Pass</div>
+        <div class="bottom">
+          <div class="shop-name">Премиум пропуск</div>
+          <div class="shop-price">2200 ₽</div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -213,19 +316,13 @@ function show(id) {
   document.getElementById(id).classList.add('active');
 }
 
-/* BUTTON EFFECT */
+/* BUTTON */
 const btn = document.getElementById('continueBtn');
-
 btn.addEventListener('touchstart', () => btn.classList.add('pressed'));
 btn.addEventListener('touchend', () => btn.classList.remove('pressed'));
 
-btn.addEventListener('click', e => {
+btn.addEventListener('click', () => {
   if (navigator.vibrate) navigator.vibrate(20);
-
-  const ripple = document.createElement('span');
-  ripple.className = 'ripple';
-  btn.appendChild(ripple);
-  setTimeout(() => ripple.remove(), 600);
 
   show('screenLoad');
   animDownload.goToAndPlay(0, true);
@@ -234,10 +331,7 @@ btn.addEventListener('click', e => {
     show('screenIntro');
     animMain.goToAndPlay(0, true);
 
-    setTimeout(() => {
-      show('screenMenu');
-    }, 2000);
-
+    setTimeout(() => show('screenMenu'), 2000);
   }, 2500);
 });
 </script>
