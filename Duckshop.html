@@ -7,7 +7,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 
 <style>
-/* ===== ОСНОВНЫЕ СТИЛИ ===== */
 html, body {
   margin: 0;
   width: 100%;
@@ -17,14 +16,12 @@ html, body {
   overflow: hidden;
 }
 
-/* ===== КОНТЕЙНЕР ВСЕХ ЭКРАНОВ ===== */
 #app {
   position: relative;
   width: 100%;
   height: 100%;
 }
 
-/* ===== ОБЩИЙ СТИЛЬ ВСЕХ ЭКРАНОВ ===== */
 .screen {
   position: absolute;
   inset: 0;
@@ -53,7 +50,6 @@ html, body {
   transform: translateY(-40px);
 }
 
-/* ===== ОБЩИЕ ЭЛЕМЕНТЫ ===== */
 .sticker {
   width: 260px;
   height: 260px;
@@ -110,16 +106,6 @@ html, body {
   border: 2px solid rgba(255,255,255,0.3);
 }
 
-/* ===== ЭКРАН 1: ПРИВЕТСТВИЕ ===== */
-#helloScreen { justify-content: center; }
-
-/* ===== ЭКРАН 2: ЗАГРУЗКА ===== */
-#loadScreen { justify-content: center; }
-
-/* ===== ЭКРАН 3: ИНТРО ===== */
-#introScreen { justify-content: center; }
-
-/* ===== ЭКРАН 4: МАГАЗИН ===== */
 #shopScreen {
   justify-content: flex-start;
   padding: 0;
@@ -142,7 +128,6 @@ html, body {
 
 .menu-header-title { white-space: nowrap; }
 
-/* Кнопка корзины */
 .cart-btn {
   position: relative;
   width: 44px;
@@ -190,7 +175,6 @@ html, body {
   gap: 18px;
 }
 
-/* Карточка товара */
 .shop-card {
   position: relative;
   height: 240px;
@@ -272,7 +256,6 @@ html, body {
   white-space: nowrap;
 }
 
-/* ===== МОДАЛКА КОРЗИНЫ ===== */
 .cart-overlay {
   position: fixed;
   inset: 0;
@@ -430,8 +413,6 @@ html, body {
 .btn-checkout { background: #000; color: #fff; }
 .cart-action:active { transform: scale(.98); }
 
-/* ===== ЭКРАН 5: УСПЕШНАЯ ОПЛАТА ===== */
-#successPayScreen { justify-content: center; }
 .order-info {
   margin-top: 12px;
   font-size: 16px;
@@ -439,12 +420,6 @@ html, body {
   color: rgba(255,255,255,.85);
   text-align: center;
 }
-
-/* ===== ЭКРАН 6: ОШИБКА ОПЛАТЫ ===== */
-#failPayScreen { justify-content: center; }
-
-/* ===== ЭКРАН 7: ВВОД ПОЧТЫ ===== */
-#emailScreen { justify-content: center; }
 
 .form-group {
   margin-top: 24px;
@@ -484,9 +459,6 @@ html, body {
   text-align: center;
   display: none;
 }
-
-/* ===== ЭКРАН 8: ВВОД КОДА ===== */
-#codeScreen { justify-content: center; }
 
 .code-inputs {
   display: flex;
@@ -530,9 +502,6 @@ html, body {
   font-size: 16px;
 }
 
-/* ===== ЭКРАН 9: ФИНАЛЬНЫЙ УСПЕХ ===== */
-#successFinalScreen { justify-content: center; }
-
 .buttons-group {
   margin-top: 32px;
   display: flex;
@@ -541,9 +510,6 @@ html, body {
   width: 90%;
   max-width: 300px;
 }
-
-/* ===== ЭКРАН 10: ФИНАЛЬНАЯ ОШИБКА ===== */
-#failFinalScreen { justify-content: center; }
 
 .contact-info {
   margin-top: 20px;
@@ -558,7 +524,6 @@ html, body {
   text-decoration: none;
 }
 
-/* ===== LOADING OVERLAY ===== */
 .loading-overlay {
   position: fixed;
   inset: 0;
@@ -583,7 +548,6 @@ html, body {
   color: #fff;
 }
 
-/* ===== МОБИЛЬНАЯ ВЕРСИЯ ===== */
 @media (max-width: 480px) {
   .cards {
     grid-template-columns: 1fr;
@@ -760,7 +724,7 @@ html, body {
 <script>
 // ================== КОНФИГУРАЦИЯ ==================
 const CONFIG = {
-  SERVER_URL: 'https://duck-backend-by9a.onrender.com/', // Ваш Render URL
+  SERVER_URL: 'https://duck-backend-by9a.onrender.com',
   PRODUCTS: [
     { id:"c30",   name:"30 кристаллов",  price:200,  img:"https://i.imgur.com/s4K0WIP.png" },
     { id:"c80",   name:"80 кристаллов",  price:550,  img:"https://i.imgur.com/XbnZKDb.png" },
@@ -819,18 +783,15 @@ const screens = {
 };
 
 function showScreen(screenName, data = {}) {
-  // Скрыть все экраны
   Object.values(screens).forEach(id => {
     const screen = document.getElementById(id);
     screen.classList.remove('active', 'leaving');
   });
   
-  // Показать нужный экран
   const targetScreen = document.getElementById(screens[screenName]);
   setTimeout(() => {
     targetScreen.classList.add('active');
     
-    // Инициализация экрана если нужно
     if (screenName === 'shop') initShop();
     else if (screenName === 'successPay') initSuccessPay(data);
     else if (screenName === 'email') initEmail(data);
@@ -937,11 +898,9 @@ function clearCart() {
 
 // ================== ИНИЦИАЛИЗАЦИЯ ЭКРАНОВ ==================
 function initShop() {
-  // Загружаем корзину
   cart = loadCart();
   updateCartBadge();
   
-  // Рендерим товары
   const container = document.getElementById('cardsContainer');
   container.innerHTML = CONFIG.PRODUCTS.map(product => `
     <div class="shop-card">
@@ -975,12 +934,10 @@ function initEmail(data) {
 }
 
 function initCode(data) {
-  // Сбрасываем поля ввода кода
   document.querySelectorAll('.code-input').forEach(input => input.value = '');
   document.getElementById('submitCodeBtn').disabled = true;
   document.getElementById('codeError').style.display = 'none';
   
-  // Показываем информацию о заказе
   const orderDetails = document.getElementById('orderDetails');
   if (currentOrder && currentOrder.email) {
     orderDetails.innerHTML = `№ ${currentOrder.id}<br>${currentOrder.email}`;
@@ -999,7 +956,6 @@ function initSuccessFinal(data) {
     `;
   }
   
-  // Очищаем корзину и текущий заказ
   clearCart();
   localStorage.removeItem(CONFIG.CURRENT_ORDER_KEY);
   currentOrder = null;
@@ -1012,42 +968,103 @@ function initFailFinal(data) {
 
 // ================== ПЛАТЕЖНАЯ СИСТЕМА ==================
 async function createPayment() {
+  console.log('[DEBUG] createPayment() вызвана');
+  
   if (Object.keys(cart).length === 0) {
     alert('Корзина пуста');
     return;
   }
   
+  console.log('[DEBUG] Товары в корзине:', cart);
+  
   showLoading('Оформление заказа...');
   
   try {
+    let totalRub = 0;
+    for (const [id, qty] of Object.entries(cart)) {
+      const product = CONFIG.PRODUCTS.find(p => p.id === id);
+      if (product) totalRub += product.price * qty;
+    }
+    
+    console.log('[DEBUG] Сумма заказа:', totalRub, 'руб.');
+    
+    const requestData = {
+      items: cart,
+      method: 'card',
+      amount: totalRub
+    };
+    
+    console.log('[DEBUG] Отправляемые данные:', JSON.stringify(requestData));
+    console.log('[DEBUG] URL сервера:', CONFIG.SERVER_URL + '/create-payment');
+    
     const response = await fetch(`${CONFIG.SERVER_URL}/create-payment`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        items: cart,
-        method: 'card' // BileePay сам предложит выбор
-      })
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(requestData)
     });
     
-    if (!response.ok) throw new Error('Ошибка сервера');
+    console.log('[DEBUG] Статус ответа:', response.status, response.statusText);
     
-    const data = await response.json();
+    if (!response.ok) {
+      let errorText = 'Нет деталей ошибки';
+      try {
+        errorText = await response.text();
+        console.error('[DEBUG] Текст ошибки:', errorText);
+      } catch (e) {
+        console.error('[DEBUG] Не удалось прочитать ошибку:', e);
+      }
+      
+      throw new Error(`Ошибка сервера (${response.status}): ${errorText}`);
+    }
     
-    if (data.url) {
-      // Сохраняем информацию о заказе
-      currentOrder = { id: data.order_id, items: cart };
+    let data;
+    try {
+      data = await response.json();
+      console.log('[DEBUG] Данные от сервера:', data);
+    } catch (e) {
+      console.error('[DEBUG] Не удалось распарсить JSON:', e);
+      throw new Error('Неверный формат ответа от сервера');
+    }
+    
+    if (data && data.url) {
+      console.log('[DEBUG] URL для оплаты:', data.url);
+      
+      currentOrder = { 
+        id: data.order_id, 
+        items: cart,
+        amount: totalRub
+      };
       localStorage.setItem(CONFIG.CURRENT_ORDER_KEY, JSON.stringify(currentOrder));
       
-      // Редирект на BileePay
-      window.location.href = data.url;
+      clearCart();
+      
+      setTimeout(() => {
+        window.location.href = data.url;
+      }, 1000);
+      
     } else {
-      throw new Error('Не получен URL для оплаты');
+      console.error('[DEBUG] Нет URL в ответе:', data);
+      throw new Error('Сервер не вернул ссылку для оплаты');
     }
+    
   } catch (error) {
-    console.error('Ошибка создания платежа:', error);
-    alert('Ошибка при оформлении заказа: ' + error.message);
-  } finally {
+    console.error('[DEBUG] Ошибка:', error);
     hideLoading();
+    
+    let errorMessage = 'Ошибка при оформлении заказа';
+    
+    if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+      errorMessage = 'Нет связи с сервером. Проверьте интернет соединение и адрес сервера.';
+    } else if (error.message.includes('CORS')) {
+      errorMessage = 'Ошибка CORS. Сервер не разрешает запросы с этого домена.';
+    } else {
+      errorMessage = error.message;
+    }
+    
+    alert(errorMessage);
   }
 }
 
@@ -1076,7 +1093,6 @@ async function submitEmail(email) {
     
     if (!response.ok) throw new Error('Ошибка сервера');
     
-    // Сохраняем email в текущем заказе
     currentOrder.email = email;
     localStorage.setItem(CONFIG.CURRENT_ORDER_KEY, JSON.stringify(currentOrder));
     
@@ -1092,7 +1108,6 @@ async function submitEmail(email) {
 
 // ================== LOTTIE АНИМАЦИИ ==================
 function initAnimations() {
-  // Загружаем анимации для всех экранов
   const animations = [
     { id: 'animHello', path: 'hello.json' },
     { id: 'animDownload', path: 'download.json' },
@@ -1122,14 +1137,12 @@ function initAnimations() {
 
 // ================== ОБРАБОТЧИКИ СОБЫТИЙ ==================
 function initEventListeners() {
-  // Навигация
   document.getElementById('continueBtn').addEventListener('click', () => {
     showScreen('load');
     setTimeout(() => showScreen('intro'), 1500);
     setTimeout(() => showScreen('shop'), 3000);
   });
   
-  // Корзина
   document.getElementById('openCart').addEventListener('click', () => {
     renderCart();
     document.getElementById('cartOverlay').classList.add('open');
@@ -1149,7 +1162,6 @@ function initEventListeners() {
   
   document.getElementById('checkoutBtn').addEventListener('click', createPayment);
   
-  // Динамические обработчики для корзины
   document.getElementById('cartBody').addEventListener('click', (e) => {
     const incBtn = e.target.closest('[data-inc]');
     const decBtn = e.target.closest('[data-dec]');
@@ -1158,30 +1170,25 @@ function initEventListeners() {
     if (decBtn) removeFromCart(decBtn.getAttribute('data-dec'));
   });
   
-  // Добавление в корзину
   document.getElementById('cardsContainer').addEventListener('click', (e) => {
     const buyBtn = e.target.closest('.shop-buy');
     if (buyBtn) {
       const productId = buyBtn.getAttribute('data-id');
       addToCart(productId);
       
-      // Анимация нажатия
       buyBtn.style.transform = 'scale(0.95)';
       setTimeout(() => buyBtn.style.transform = '', 150);
     }
   });
   
-  // Успешная оплата -> Email
   document.getElementById('toEmailBtn').addEventListener('click', () => {
     showScreen('email');
   });
   
-  // Ошибка оплаты -> Магазин
   document.getElementById('backToShopBtn').addEventListener('click', () => {
     showScreen('shop');
   });
   
-  // Отправка email
   document.getElementById('submitEmailBtn').addEventListener('click', async () => {
     const email = document.getElementById('emailInput').value.trim();
     const success = await submitEmail(email);
@@ -1190,22 +1197,18 @@ function initEventListeners() {
     }
   });
   
-  // Ввод кода
   const codeInputs = document.querySelectorAll('.code-input');
   codeInputs.forEach((input, index) => {
     input.addEventListener('input', (e) => {
-      // Только цифры
       if (!/^\d*$/.test(e.target.value)) {
         e.target.value = '';
         return;
       }
       
-      // Автопереход к следующему полю
       if (e.target.value.length === 1 && index < 5) {
         codeInputs[index + 1].focus();
       }
       
-      // Проверяем заполнение всех полей
       const allFilled = Array.from(codeInputs).every(inp => inp.value.length === 1);
       document.getElementById('submitCodeBtn').disabled = !allFilled;
     });
@@ -1229,17 +1232,13 @@ function initEventListeners() {
     });
   });
   
-  // Отправка кода
   document.getElementById('submitCodeBtn').addEventListener('click', () => {
     const code = Array.from(codeInputs).map(inp => inp.value).join('');
     if (code.length === 6) {
-      // Здесь должен быть запрос на сервер для проверки кода
-      // Показываем экран ожидания решения админа
       showScreen('successFinal');
     }
   });
   
-  // Финальные экраны
   document.getElementById('reviewBtn').addEventListener('click', () => {
     alert('Спасибо! Ссылка на отзыв будет отправлена на вашу почту.');
     showScreen('shop');
@@ -1257,7 +1256,6 @@ function initEventListeners() {
     showScreen('code');
   });
   
-  // Enter в поле email
   document.getElementById('emailInput').addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
       document.getElementById('submitEmailBtn').click();
@@ -1267,10 +1265,8 @@ function initEventListeners() {
 
 // ================== ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ ==================
 function init() {
-  // Инициализируем анимации
   initAnimations();
   
-  // Загружаем текущий заказ из localStorage
   try {
     const savedOrder = localStorage.getItem(CONFIG.CURRENT_ORDER_KEY);
     if (savedOrder) {
@@ -1280,27 +1276,21 @@ function init() {
     console.error('Error loading order:', e);
   }
   
-  // Проверяем URL для определения текущего экрана
   const urlParams = new URLSearchParams(window.location.search);
   const orderId = urlParams.get('order');
   const status = urlParams.get('status');
   
   if (orderId && !status) {
-    // Пришли с BileePay после успешной оплаты
     showScreen('successPay', { orderId });
   } else if (status === 'fail') {
-    // Пришли с BileePay после ошибки оплаты
     showScreen('failPay');
   } else {
-    // Обычный запуск - начинаем с приветствия
     showScreen('hello');
   }
   
-  // Инициализируем обработчики событий
   initEventListeners();
 }
 
-// Запуск приложения
 document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
