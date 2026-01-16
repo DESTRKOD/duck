@@ -98,6 +98,8 @@ html, body {
 .button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  background: #ccc;
+  color: #666;
 }
 
 .button.secondary {
@@ -124,42 +126,92 @@ html, body {
   gap: 12px;
   box-sizing: border-box;
   flex-shrink: 0;
+  position: relative;
 }
 
 .menu-header-title { white-space: nowrap; }
 
 .cart-btn {
   position: relative;
-  width: 44px;
-  height: 44px;
+  width: 56px;
+  height: 56px;
   border: 0;
-  border-radius: 14px;
-  background: rgba(255,255,255,.14);
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff2d55, #ff6b6b);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(255,45,85,0.4);
+  transition: all 0.2s ease;
 }
-.cart-btn:active { transform: scale(.97); }
-.cart-btn svg { width: 22px; height: 22px; fill: #fff; }
+.cart-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(255,45,85,0.5);
+}
+.cart-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 4px 12px rgba(255,45,85,0.3);
+}
+.cart-btn svg {
+  width: 28px;
+  height: 28px;
+  fill: #fff;
+}
 
 .cart-badge {
   position: absolute;
-  top: 6px;
-  right: 6px;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 5px;
+  top: -5px;
+  right: -5px;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 6px;
   border-radius: 999px;
-  background: #ff2d55;
-  color: #fff;
-  font-size: 12px;
+  background: #ffffff;
+  color: #ff2d55;
+  font-size: 14px;
   font-weight: 900;
   display: none;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 18px rgba(0,0,0,.25);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  border: 2px solid #0b3c91;
+  z-index: 10;
+  animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.cart-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #fff;
+  color: #0b3c91;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  z-index: 1000;
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cart-notification.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+.cart-notification-icon {
+  width: 24px;
+  height: 24px;
+  fill: #ff2d55;
 }
 
 .menu-scroll {
@@ -237,7 +289,7 @@ html, body {
 .shop-buy {
   min-width: 140px;
   height: 44px;
-  background: #000;
+  background: linear-gradient(135deg, #0b3c91, #1565c0);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -246,8 +298,23 @@ html, body {
   padding: 0 12px;
   border: 0;
   cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(11,60,145,0.3);
 }
-.shop-buy:active { transform: scale(.98); }
+.shop-buy:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(11,60,145,0.4);
+}
+.shop-buy:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(11,60,145,0.2);
+}
+.shop-buy:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
 .shop-buy svg { width: 20px; height: 20px; fill: #fff; }
 .shop-price {
   color: #fff;
@@ -377,6 +444,10 @@ html, body {
   cursor: pointer;
 }
 .qty-btn:active { transform: scale(.97); }
+.qty-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
 .qty-num {
   min-width: 22px;
   text-align: center;
@@ -396,6 +467,13 @@ html, body {
   font-weight: 900;
   font-size: 16px;
 }
+.cart-limit-info {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ff2d55;
+  margin-top: -5px;
+}
 .cart-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -410,7 +488,14 @@ html, body {
   font-size: 15px;
 }
 .btn-clear { background: #eef0f6; }
-.btn-checkout { background: #000; color: #fff; }
+.btn-checkout {
+  background: linear-gradient(135deg, #0b3c91, #1565c0);
+  color: #fff;
+}
+.btn-checkout:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
 .cart-action:active { transform: scale(.98); }
 
 .order-info {
@@ -548,6 +633,45 @@ html, body {
   color: #fff;
 }
 
+/* Уведомление о лимите */
+.limit-warning {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100%);
+  background: #ff2d55;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 700;
+  box-shadow: 0 8px 25px rgba(255,45,85,0.3);
+  z-index: 1001;
+  transition: transform 0.3s ease;
+  text-align: center;
+}
+.limit-warning.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Уведомление о загрузке товаров */
+.products-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(11, 60, 145, 0.9);
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-weight: 700;
+  z-index: 999;
+  animation: slideDown 0.3s ease;
+}
+@keyframes slideDown {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
 @media (max-width: 480px) {
   .cards {
     grid-template-columns: 1fr;
@@ -560,12 +684,39 @@ html, body {
   .code-input { width: 50px; height: 60px; font-size: 28px; }
   .title { font-size: 26px; }
   .button { padding: 18px 40px; font-size: 20px; }
+  .cart-btn {
+    width: 50px;
+    height: 50px;
+  }
+  .cart-badge {
+    min-width: 22px;
+    height: 22px;
+    font-size: 12px;
+  }
 }
 </style>
 </head>
 
 <body>
 <div id="app">
+  <!-- УВЕДОМЛЕНИЕ О ДОБАВЛЕНИИ В КОРЗИНУ -->
+  <div class="cart-notification" id="cartNotification">
+    <svg class="cart-notification-icon" viewBox="0 0 24 24">
+      <path d="M9 20a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM9.16 16h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H10.53L7.21 6H3v2h3l3.6 7.59-1.35 2.44C7.52 18.37 8.48 20 10 20h12v-2H10l1.16-2z"/>
+    </svg>
+    <span id="cartNotificationText">Товар добавлен в корзину!</span>
+  </div>
+
+  <!-- УВЕДОМЛЕНИЕ О ЛИМИТЕ -->
+  <div class="limit-warning" id="limitWarning">
+    ⚠️ Лимит корзины: 10,000₽
+  </div>
+
+  <!-- УВЕДОМЛЕНИЕ О ЗАГРУЗКЕ ТОВАРОВ -->
+  <div class="products-loading" id="productsLoading" style="display: none;">
+    🔄 Загрузка товаров с сервера...
+  </div>
+
   <!-- ЭКРАН 1: ПРИВЕТСТВИЕ -->
   <div id="helloScreen" class="screen active">
     <div id="animHello" class="sticker"></div>
@@ -591,7 +742,7 @@ html, body {
       <div class="menu-header-title">Магазин кристаллов</div>
       <button class="cart-btn" id="openCart">
         <svg viewBox="0 0 24 24">
-          <path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/>
+          <path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H10l1.16-2z"/>
         </svg>
         <div class="cart-badge" id="cartBadge">0</div>
       </button>
@@ -706,6 +857,7 @@ html, body {
           <div>Итого</div>
           <div id="cartTotal">0 ₽</div>
         </div>
+        <div class="cart-limit-info" id="cartLimitInfo"></div>
         <div class="cart-actions">
           <button class="cart-action btn-clear" id="clearCart">Очистить</button>
           <button class="cart-action btn-checkout" id="checkoutBtn">Оформить</button>
@@ -724,23 +876,12 @@ html, body {
 <script>
 // ================== КОНФИГУРАЦИЯ ==================
 const CONFIG = {
-  // ВАШ СЕРВЕР (БЕЗ СЛЭША В КОНЦЕ!)
+  // ВАШ СЕРВЕР НА RENDER
   SERVER_URL: 'https://duck-backend-by9a.onrender.com',
   
-  PRODUCTS: [
-    { id:"c30",   name:"30 кристаллов",  price:200,  img:"https://i.imgur.com/s4K0WIP.png" },
-    { id:"c80",   name:"80 кристаллов",  price:550,  img:"https://i.imgur.com/XbnZKDb.png" },
-    { id:"c170",  name:"170 кристаллов", price:950,  img:"https://i.imgur.com/X0JCmMQ.png" },
-    { id:"c360",  name:"360 кристаллов", price:1900, img:"https://i.imgur.com/7z8z9Rw.png" },
-    { id:"c950",  name:"950 кристаллов", price:4600, img:"https://i.imgur.com/zzBuIxF.png" },
-    { id:"c2000", name:"2000 кристаллов",price:9000, img:"https://i.imgur.com/FTVnycE.png" },
-    { id:"bp",    name:"Brawl Pass",      price:900,  img:"https://i.imgur.com/FaFAL6l.png" },
-    { id:"bpplus",name:"Brawl Pass Plus", price:1200, img:"https://i.imgur.com/21InnIc.png" },
-    { id:"up",    name:"Улучшение до БП+",price:550,  img:"https://i.imgur.com/yhaR5Ho.png" },
-    { id:"bp_g",  name:"Brawl Pass",      price:950,  img:"https://i.imgur.com/FaFAL6l.png", gift:true },
-    { id:"bpp_g", name:"Brawl Pass Plus", price:1250, img:"https://i.imgur.com/21InnIc.png", gift:true },
-    { id:"pro",   name:"Pro Pass",        price:2200, img:"https://i.imgur.com/6808Xnp.png" }
-  ],
+  // МАКСИМАЛЬНАЯ СУММА В КОРЗИНЕ (10,000₽)
+  MAX_CART_TOTAL: 10000,
+  
   CART_KEY: 'duck_cart_v1',
   CURRENT_ORDER_KEY: 'duck_current_order'
 };
@@ -748,6 +889,62 @@ const CONFIG = {
 // ================== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ==================
 let cart = {};
 let currentOrder = null;
+let PRODUCTS = []; // Товары загружаются с сервера
+
+// ================== ЗАГРУЗКА ТОВАРОВ С СЕРВЕРА ==================
+async function loadProductsFromServer() {
+  console.log('🔄 Загрузка товаров с сервера...');
+  
+  // Показываем уведомление о загрузке
+  const loadingElement = document.getElementById('productsLoading');
+  loadingElement.style.display = 'block';
+  
+  try {
+    const response = await fetch(`${CONFIG.SERVER_URL}/api/products`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+      timeout: 10000
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Ошибка сервера: ${response.status} ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    
+    if (data.success && data.products && Array.isArray(data.products)) {
+      PRODUCTS = data.products;
+      console.log(`✅ Загружено ${PRODUCTS.length} товаров с сервера`);
+      
+      // Обновляем магазин если он активен
+      if (document.getElementById('shopScreen').classList.contains('active')) {
+        renderShopProducts();
+      }
+      
+    } else {
+      throw new Error(data.error || 'Неверный формат ответа от сервера');
+    }
+    
+  } catch (error) {
+    console.error('❌ Ошибка загрузки товаров:', error);
+    
+    // Используем товары по умолчанию если сервер недоступен
+    PRODUCTS = [
+      { id:"c30", name:"30 кристаллов", price:200, img:"https://i.imgur.com/s4K0WIP.png" },
+      { id:"c80", name:"80 кристаллов", price:550, img:"https://i.imgur.com/XbnZKDb.png" },
+      { id:"c170", name:"170 кристаллов", price:950, img:"https://i.imgur.com/X0JCmMQ.png" },
+      { id:"bp", name:"Brawl Pass", price:900, img:"https://i.imgur.com/FaFAL6l.png" }
+    ];
+    
+    // Показываем уведомление
+    showNotification('⚠️ Используются товары по умолчанию', 'warning');
+  } finally {
+    // Скрываем уведомление о загрузке
+    loadingElement.style.display = 'none';
+  }
+}
 
 // ================== УТИЛИТЫ ==================
 function formatRubles(amount) {
@@ -768,6 +965,56 @@ function showError(elementId, message) {
   element.textContent = message;
   element.style.display = 'block';
   setTimeout(() => element.style.display = 'none', 5000);
+}
+
+function showNotification(message, type = 'info') {
+  // Создаем временное уведомление
+  const notification = document.createElement('div');
+  notification.className = 'cart-notification';
+  notification.style.background = type === 'warning' ? '#ff9500' : '#fff';
+  notification.style.color = type === 'warning' ? '#fff' : '#0b3c91';
+  
+  notification.innerHTML = `
+    <svg class="cart-notification-icon" viewBox="0 0 24 24" style="fill: ${type === 'warning' ? '#fff' : '#ff2d55'}">
+      ${type === 'warning' ? 
+        '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>' :
+        '<path d="M9 20a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM9.16 16h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H10.53L7.21 6H3v2h3l3.6 7.59-1.35 2.44C7.52 18.37 8.48 20 10 20h12v-2H10l1.16-2z"/>'
+      }
+    </svg>
+    <span>${message}</span>
+  `;
+  
+  document.body.appendChild(notification);
+  
+  // Анимация появления
+  setTimeout(() => notification.classList.add('show'), 10);
+  
+  // Удаляем через 3 секунды
+  setTimeout(() => {
+    notification.classList.remove('show');
+    setTimeout(() => notification.remove(), 300);
+  }, 3000);
+}
+
+function showCartNotification(productName) {
+  const notification = document.getElementById('cartNotification');
+  const text = document.getElementById('cartNotificationText');
+  
+  text.textContent = productName ? `${productName} добавлен в корзину!` : 'Товар добавлен в корзину!';
+  notification.classList.add('show');
+  
+  setTimeout(() => {
+    notification.classList.remove('show');
+  }, 3000);
+}
+
+function showLimitWarning() {
+  const warning = document.getElementById('limitWarning');
+  warning.classList.add('show');
+  
+  setTimeout(() => {
+    warning.classList.remove('show');
+  }, 3000);
 }
 
 // ================== УПРАВЛЕНИЕ ЭКРАНАМИ ==================
@@ -832,10 +1079,32 @@ function updateCartBadge() {
 function calculateCartTotal() {
   let total = 0;
   for (const [id, qty] of Object.entries(cart)) {
-    const product = CONFIG.PRODUCTS.find(p => p.id === id);
+    const product = PRODUCTS.find(p => p.id === id);
     if (product) total += product.price * qty;
   }
   return total;
+}
+
+function checkCartLimit() {
+  const total = calculateCartTotal();
+  const limitInfo = document.getElementById('cartLimitInfo');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+  
+  if (total > CONFIG.MAX_CART_TOTAL) {
+    limitInfo.textContent = `Превышен лимит ${formatRubles(CONFIG.MAX_CART_TOTAL)}! Удалите товары.`;
+    limitInfo.style.color = '#ff2d55';
+    checkoutBtn.disabled = true;
+    return false;
+  } else if (total > 0) {
+    const remaining = CONFIG.MAX_CART_TOTAL - total;
+    limitInfo.textContent = `Доступно еще: ${formatRubles(remaining)}`;
+    limitInfo.style.color = remaining < 1000 ? '#ff9500' : '#42a5f5';
+    checkoutBtn.disabled = false;
+  } else {
+    limitInfo.textContent = '';
+    checkoutBtn.disabled = false;
+  }
+  return true;
 }
 
 function renderCart() {
@@ -850,20 +1119,23 @@ function renderCart() {
   
   let html = '';
   for (const [id, qty] of Object.entries(cart)) {
-    const product = CONFIG.PRODUCTS.find(p => p.id === id);
+    const product = PRODUCTS.find(p => p.id === id);
     if (!product) continue;
+    
+    const totalPrice = product.price * qty;
+    const canIncrement = checkCanAddProduct(id);
     
     html += `
       <div class="cart-row">
-        <div class="cart-thumb"><img src="${product.img}" alt=""></div>
+        <div class="cart-thumb"><img src="${product.img}" alt="${product.name}" onerror="this.src='https://i.imgur.com/s4K0WIP.png'"></div>
         <div class="cart-info">
           <div class="cart-name">${product.name}${product.gift ? ' 🎁' : ''}</div>
-          <div class="cart-sub">${formatRubles(product.price)} • ${formatRubles(product.price * qty)}</div>
+          <div class="cart-sub">${formatRubles(product.price)} • ${formatRubles(totalPrice)}</div>
         </div>
         <div class="cart-qty">
           <button class="qty-btn" data-dec="${id}">−</button>
           <div class="qty-num">${qty}</div>
-          <button class="qty-btn" data-inc="${id}">+</button>
+          <button class="qty-btn" data-inc="${id}" ${canIncrement ? '' : 'disabled'}>+</button>
         </div>
       </div>
     `;
@@ -871,15 +1143,42 @@ function renderCart() {
   
   cartBody.innerHTML = html;
   cartTotal.textContent = formatRubles(calculateCartTotal());
+  checkCartLimit();
+}
+
+function checkCanAddProduct(productId) {
+  const product = PRODUCTS.find(p => p.id === productId);
+  if (!product) return false;
+  
+  const currentTotal = calculateCartTotal();
+  const newTotal = currentTotal + product.price;
+  
+  return newTotal <= CONFIG.MAX_CART_TOTAL;
 }
 
 function addToCart(productId) {
+  const product = PRODUCTS.find(p => p.id === productId);
+  if (!product) {
+    showNotification('Товар не найден', 'warning');
+    return;
+  }
+  
+  if (!checkCanAddProduct(productId)) {
+    showLimitWarning();
+    return;
+  }
+  
   cart[productId] = (cart[productId] || 0) + 1;
   saveCart();
   updateCartBadge();
+  
+  showCartNotification(product.name);
+  
   if (document.getElementById('cartOverlay').classList.contains('open')) {
     renderCart();
   }
+  
+  updateAddToCartButtons();
 }
 
 function removeFromCart(productId) {
@@ -889,6 +1188,7 @@ function removeFromCart(productId) {
   saveCart();
   updateCartBadge();
   renderCart();
+  updateAddToCartButtons();
 }
 
 function clearCart() {
@@ -896,6 +1196,17 @@ function clearCart() {
   saveCart();
   updateCartBadge();
   renderCart();
+  updateAddToCartButtons();
+}
+
+function updateAddToCartButtons() {
+  document.querySelectorAll('.shop-buy').forEach(button => {
+    const productId = button.getAttribute('data-id');
+    const product = PRODUCTS.find(p => p.id === productId);
+    if (product) {
+      button.disabled = !checkCanAddProduct(productId);
+    }
+  });
 }
 
 // ================== ИНИЦИАЛИЗАЦИЯ ЭКРАНОВ ==================
@@ -903,14 +1214,61 @@ function initShop() {
   cart = loadCart();
   updateCartBadge();
   
+  // Показываем заглушку если товары еще не загружены
   const container = document.getElementById('cardsContainer');
-  container.innerHTML = CONFIG.PRODUCTS.map(product => `
+  
+  if (PRODUCTS.length === 0) {
+    container.innerHTML = `
+      <div style="width: 100%; text-align: center; padding: 40px; color: white;">
+        <div style="font-size: 48px; margin-bottom: 20px;">🔄</div>
+        <div style="font-size: 18px; font-weight: 700; margin-bottom: 10px;">Загрузка товаров...</div>
+        <div style="font-size: 14px; opacity: 0.8;">Магазин скоро будет готов</div>
+      </div>
+    `;
+    
+    // Пытаемся загрузить товары
+    setTimeout(() => {
+      if (PRODUCTS.length === 0) {
+        container.innerHTML = `
+          <div style="width: 100%; text-align: center; padding: 40px; color: white;">
+            <div style="font-size: 48px; margin-bottom: 20px;">⚠️</div>
+            <div style="font-size: 18px; font-weight: 700; margin-bottom: 10px;">Нет соединения с сервером</div>
+            <div style="font-size: 14px; opacity: 0.8;">Попробуйте обновить страницу</div>
+            <button style="margin-top: 20px; padding: 12px 24px; background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 10px; cursor: pointer;" onclick="location.reload()">Обновить</button>
+          </div>
+        `;
+      }
+    }, 5000);
+    
+    return;
+  }
+  
+  renderShopProducts();
+}
+
+function renderShopProducts() {
+  const container = document.getElementById('cardsContainer');
+  
+  if (PRODUCTS.length === 0) {
+    container.innerHTML = `
+      <div style="width: 100%; text-align: center; padding: 40px; color: white;">
+        <div style="font-size: 48px; margin-bottom: 20px;">🛒</div>
+        <div style="font-size: 18px; font-weight: 700; margin-bottom: 10px;">Товары не найдены</div>
+        <div style="font-size: 14px; opacity: 0.8;">Используйте бота для добавления товаров</div>
+      </div>
+    `;
+    return;
+  }
+  
+  container.innerHTML = PRODUCTS.map(product => {
+    const canAdd = checkCanAddProduct(product.id);
+    return `
     <div class="shop-card">
       ${product.gift ? '<div class="gift"><img src="https://i.imgur.com/Tdajl7F.png" alt=""></div>' : ''}
-      <div class="shop-top"><img src="${product.img}" alt="${product.name}"></div>
+      <div class="shop-top"><img src="${product.img}" alt="${product.name}" onerror="this.src='https://i.imgur.com/s4K0WIP.png'"></div>
       <div class="shop-bottom">
         <div class="shop-name">${product.name}</div>
-        <button class="shop-buy" data-id="${product.id}">
+        <button class="shop-buy" data-id="${product.id}" ${canAdd ? '' : 'disabled'}>
           <svg viewBox="0 0 24 24">
             <path d="M7 18a2 2 0 1 0 0 4a2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4a2 2 0 0 0 0-4zM7.16 14h9.45a2 2 0 0 0 1.75-1.03l3.58-6.49-1.74-.99-3.58 6.49H8.53L5.21 4H1v2h3l3.6 7.59-1.35 2.44C5.52 16.37 6.48 18 8 18h12v-2H8l1.16-2z"/>
           </svg>
@@ -918,7 +1276,7 @@ function initShop() {
         </button>
       </div>
     </div>
-  `).join('');
+  `}).join('');
 }
 
 function initSuccessPay(data) {
@@ -970,10 +1328,16 @@ function initFailFinal(data) {
 
 // ================== ПЛАТЕЖНАЯ СИСТЕМА ==================
 async function createPayment() {
-  console.log('🟢 createPayment вызвана');
+  console.log('🟢 Создание платежа...');
   
   if (Object.keys(cart).length === 0) {
-    alert('Корзина пуста');
+    showNotification('Корзина пуста', 'warning');
+    return;
+  }
+  
+  const total = calculateCartTotal();
+  if (total > CONFIG.MAX_CART_TOTAL) {
+    showNotification(`Сумма заказа превышает лимит ${formatRubles(CONFIG.MAX_CART_TOTAL)}`, 'warning');
     return;
   }
   
@@ -984,20 +1348,11 @@ async function createPayment() {
   try {
     let totalRub = 0;
     for (const [id, qty] of Object.entries(cart)) {
-      const product = CONFIG.PRODUCTS.find(p => p.id === id);
+      const product = PRODUCTS.find(p => p.id === id);
       if (product) totalRub += product.price * qty;
     }
     
     console.log('💰 Сумма заказа:', totalRub, 'руб.');
-    
-    // Проверяем доступность сервера
-    console.log('🔍 Проверка сервера...');
-    try {
-      const check = await fetch(CONFIG.SERVER_URL, { method: 'GET' });
-      console.log('✅ Сервер доступен:', check.status, check.statusText);
-    } catch (e) {
-      console.error('❌ Сервер недоступен:', e.message);
-    }
     
     const requestData = {
       items: cart,
@@ -1005,10 +1360,8 @@ async function createPayment() {
       amount: totalRub
     };
     
-    // ПРАВИЛЬНЫЙ URL БЕЗ ДВОЙНЫХ СЛЭШЕЙ
     const paymentUrl = CONFIG.SERVER_URL + '/create-payment';
     console.log('📤 Отправка запроса на:', paymentUrl);
-    console.log('📦 Данные:', JSON.stringify(requestData));
     
     const response = await fetch(paymentUrl, {
       method: 'POST',
@@ -1031,7 +1384,7 @@ async function createPayment() {
       }
       
       if (response.status === 404) {
-        throw new Error(`Эндпоинт не найден (404). Проверьте путь: ${paymentUrl}`);
+        throw new Error(`Сервер не найден (404)`);
       } else {
         throw new Error(`Ошибка сервера: ${response.status} ${response.statusText}`);
       }
@@ -1058,7 +1411,7 @@ async function createPayment() {
       
       clearCart();
       
-      console.log('🔄 Перенаправление на BileePay...');
+      console.log('🔄 Перенаправление на оплату...');
       setTimeout(() => {
         window.location.href = data.url;
       }, 1000);
@@ -1084,7 +1437,7 @@ async function createPayment() {
       errorMessage = error.message;
     }
     
-    alert(errorMessage);
+    showNotification(errorMessage, 'warning');
   }
 }
 
@@ -1144,25 +1497,31 @@ function initAnimations() {
   animations.forEach(anim => {
     const element = document.getElementById(anim.id);
     if (element) {
-      lottie.loadAnimation({
-        container: element,
-        renderer: 'svg',
-        loop: true,
-        autoplay: true,
-        path: anim.path
-      });
+      try {
+        lottie.loadAnimation({
+          container: element,
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
+          path: anim.path
+        });
+      } catch (e) {
+        console.log('Анимация не загружена:', anim.id);
+      }
     }
   });
 }
 
 // ================== ОБРАБОТЧИКИ СОБЫТИЙ ==================
 function initEventListeners() {
+  // Кнопка продолжить
   document.getElementById('continueBtn').addEventListener('click', () => {
     showScreen('load');
     setTimeout(() => showScreen('intro'), 1500);
     setTimeout(() => showScreen('shop'), 3000);
   });
   
+  // Корзина
   document.getElementById('openCart').addEventListener('click', () => {
     renderCart();
     document.getElementById('cartOverlay').classList.add('open');
@@ -1182,6 +1541,7 @@ function initEventListeners() {
   
   document.getElementById('checkoutBtn').addEventListener('click', createPayment);
   
+  // Корзина: увеличение/уменьшение количества
   document.getElementById('cartBody').addEventListener('click', (e) => {
     const incBtn = e.target.closest('[data-inc]');
     const decBtn = e.target.closest('[data-dec]');
@@ -1190,17 +1550,20 @@ function initEventListeners() {
     if (decBtn) removeFromCart(decBtn.getAttribute('data-dec'));
   });
   
+  // Добавление товаров в корзину
   document.getElementById('cardsContainer').addEventListener('click', (e) => {
     const buyBtn = e.target.closest('.shop-buy');
-    if (buyBtn) {
+    if (buyBtn && !buyBtn.disabled) {
       const productId = buyBtn.getAttribute('data-id');
       addToCart(productId);
       
+      // Анимация нажатия
       buyBtn.style.transform = 'scale(0.95)';
       setTimeout(() => buyBtn.style.transform = '', 150);
     }
   });
   
+  // Навигация
   document.getElementById('toEmailBtn').addEventListener('click', () => {
     showScreen('email');
   });
@@ -1209,6 +1572,7 @@ function initEventListeners() {
     showScreen('shop');
   });
   
+  // Отправка email
   document.getElementById('submitEmailBtn').addEventListener('click', async () => {
     const email = document.getElementById('emailInput').value.trim();
     const success = await submitEmail(email);
@@ -1217,6 +1581,7 @@ function initEventListeners() {
     }
   });
   
+  // Ввод кода
   const codeInputs = document.querySelectorAll('.code-input');
   codeInputs.forEach((input, index) => {
     input.addEventListener('input', (e) => {
@@ -1259,6 +1624,7 @@ function initEventListeners() {
     }
   });
   
+  // Другие кнопки
   document.getElementById('reviewBtn').addEventListener('click', () => {
     alert('Спасибо! Ссылка на отзыв будет отправлена на вашу почту.');
     showScreen('shop');
@@ -1276,6 +1642,7 @@ function initEventListeners() {
     showScreen('code');
   });
   
+  // Enter в поле email
   document.getElementById('emailInput').addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
       document.getElementById('submitEmailBtn').click();
@@ -1284,9 +1651,14 @@ function initEventListeners() {
 }
 
 // ================== ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ ==================
-function init() {
+async function init() {
+  // Загружаем товары с сервера
+  await loadProductsFromServer();
+  
+  // Инициализируем анимации
   initAnimations();
   
+  // Загружаем сохраненный заказ
   try {
     const savedOrder = localStorage.getItem(CONFIG.CURRENT_ORDER_KEY);
     if (savedOrder) {
@@ -1296,6 +1668,7 @@ function init() {
     console.error('Error loading order:', e);
   }
   
+  // Проверяем URL параметры
   const urlParams = new URLSearchParams(window.location.search);
   const orderId = urlParams.get('order');
   const status = urlParams.get('status');
@@ -1308,10 +1681,27 @@ function init() {
     showScreen('hello');
   }
   
+  // Инициализируем обработчики событий
   initEventListeners();
+  
+  // Автоматическое обновление товаров каждые 30 секунд
+  setInterval(async () => {
+    if (document.getElementById('shopScreen').classList.contains('active')) {
+      console.log('🔄 Авто-обновление товаров...');
+      await loadProductsFromServer();
+    }
+  }, 30000);
 }
 
+// Запускаем при загрузке страницы
 document.addEventListener('DOMContentLoaded', init);
+
+// Кнопка обновления товаров (для разработки)
+window.refreshProducts = async function() {
+  showNotification('Обновление товаров...', 'info');
+  await loadProductsFromServer();
+  showNotification('Товары обновлены!', 'info');
+};
 </script>
 </body>
 </html>
