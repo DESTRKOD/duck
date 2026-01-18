@@ -105,6 +105,10 @@
             opacity: 0.8;
             line-height: 1.5;
         }
+        .loading {
+            display: none;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -123,10 +127,14 @@
             <label class="form-label">Адрес электронной почты:</label>
             <input type="email" id="emailInput" class="form-input" 
                    placeholder="example@gmail.com" autocomplete="email">
-            <div class="error" id="emailError">Введите корректный email</div>
+            <div class="error" id="emailError"></div>
         </div>
         
-        <button class="btn" id="submitBtn" onclick="submitEmail()">Продолжить</button>
+        <button class="btn" id="submitBtn">Продолжить</button>
+        
+        <div class="loading" id="loading">
+            <div style="margin: 10px 0;">⏳ Отправка данных...</div>
+        </div>
         
         <div class="info">
             ✅ После ввода email вы получите инструкции для получения кода активации<br>
@@ -135,62 +143,105 @@
     </div>
 
     <script>
-        // Инициализация анимации
-        lottie.loadAnimation({
-            container: document.getElementById('duckAnimation'),
-            renderer: 'svg',
-            loop: true,
-            autoplay: true,
-            path: 'duck.json'
-        });
+        // Конфигурация
+        const SERVER_URL = 'https://duck-backend-by9a.onrender.com';
         
-        // Получаем ID заказа из URL или sessionStorage
+        // Получаем ID заказа из URL
         const urlParams = new URLSearchParams(window.location.search);
-        let orderId = urlParams.get('order_id') || sessionStorage.getItem('duck_current_order_id');
+        const orderId = urlParams.get('order');
         
-        if (!orderId) {
-            // Пробуем получить из localStorage
-            try {
-                const savedOrder = localStorage.getItem('duck_current_order');
-                if (savedOrder) {
-                    const order = JSON.parse(savedOrder);
-                    orderId = order.id;
-                }
-            } catch (e) {
-                console.error('Error parsing order:', e);
+        // Инициализация
+        async function init() {
+            // Инициализация анимации
+            lottie.loadAnimation({
+                container: document.getElementById('duckAnimation'),
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                path: 'duck.json'
+            });
+            
+            if (!orderId) {
+                showError('Ошибка: заказ не найден. Возвращаемся в магазин...');
+                setTimeout(() => {
+                    window.location.href = 'Duckshop.html';
+                }, 2000);
+                return;
             }
-        }
-        
-        if (orderId) {
+            
             document.getElementById('orderInfo').textContent = `Заказ №: ${orderId}`;
-            // Сохраняем для формы
-            sessionStorage.setItem('duck_current_order_id', orderId);
-        } else {
-            document.getElementById('orderInfo').textContent = 'Заказ не найден';
-            document.getElementById('submitBtn').disabled = true;
+            
+            // Проверяем существование заказа на сервере
+            try {
+                const response = await fetch(`${SERVER_URL}/api/order-status/${orderId}`);
+                if (!response.ok) {
+                    throw new Error('Заказ не найден');
+                }
+                
+                const data = await response.json();
+                
+                // Если заказ уже завершен или отклонен, перенаправляем
+                if (data.status === 'completed') {
+                    window.location.href = `final.html?order=${orderId}`;
+                    return;
+                }
+                
+                if (data.status === 'rejected') {
+                    window.location.href = `rejected.html?order=${orderId}`;
+                    return;
+                }
+                
+                // Если email уже введен, перенаправляем на код
+                if (data.email && data.status === 'pending_code') {
+                    window.location.href = `code.html?order=${orderId}`;
+                    return;
+                }
+                
+            } catch (error) {
+                console.log('Заказ еще не создан на сервере или ошибка:', error.message);
+            }
+            
+            // Фокус на поле ввода
+            setTimeout(() => {
+                document.getElementById('emailInput').focus();
+            }, 300);
+            
+            // Обработчики событий
+            document.getElementById('submitBtn').addEventListener('click', submitEmail);
+            
+            document.getElementById('emailInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    submitEmail();
+                }
+            });
+            
+            document.getElementById('emailInput').addEventListener('input', () => {
+                document.getElementById('emailError').style.display = 'none';
+            });
         }
-        
-        // Фокус на поле ввода
-        document.getElementById('emailInput').focus();
         
         // Отправка email
         async function submitEmail() {
             const emailInput = document.getElementById('emailInput');
             const emailError = document.getElementById('emailError');
             const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
             
             const email = emailInput.value.trim();
             
             // Валидация email
-            if (!email || !email.includes('@') || !email.includes('.')) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                emailError.textContent = 'Введите корректный email (например: example@gmail.com)';
                 emailError.style.display = 'block';
                 emailInput.focus();
                 return;
             }
             
+            // Показать загрузку
             emailError.style.display = 'none';
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Отправка...';
+            submitBtn.style.display = 'none';
+            loading.style.display = 'block';
             
             try {
                 // Получаем корзину из localStorage
@@ -204,8 +255,8 @@
                     console.error('Error parsing cart:', e);
                 }
                 
-                // Отправляем на сервер
-                const response = await fetch('https://duck-backend-by9a.onrender.com/submit-email', {
+                // Отправляем на сервер (используем ваш эндпоинт)
+                const response = await fetch(`${SERVER_URL}/submit-email`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -218,47 +269,37 @@
                     })
                 });
                 
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Ошибка сервера');
+                }
+                
                 const data = await response.json();
                 
                 if (data.success) {
-                    // Сохраняем email
-                    localStorage.setItem('duck_customer_email', email);
-                    
-                    // Сохраняем заказ
-                    const orderData = {
-                        id: orderId,
-                        email: email,
-                        status: 'email_submitted',
-                        submitted_at: new Date().toISOString()
-                    };
-                    localStorage.setItem('duck_current_order', JSON.stringify(orderData));
-                    
-                    // Переходим на экран ввода кода
-                    window.location.href = 'code-screen.html?order_id=' + orderId;
-                    
+                    // Успешно - переходим на страницу ввода кода
+                    window.location.href = `code.html?order=${orderId}`;
                 } else {
-                    throw new Error(data.error || 'Ошибка сервера');
+                    throw new Error(data.error || 'Неизвестная ошибка');
                 }
                 
             } catch (error) {
+                // Показать ошибку
                 emailError.textContent = 'Ошибка: ' + error.message;
                 emailError.style.display = 'block';
+                submitBtn.style.display = 'block';
+                loading.style.display = 'none';
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Продолжить';
             }
         }
         
-        // Отправка по Enter
-        document.getElementById('emailInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                submitEmail();
-            }
-        });
+        function showError(message) {
+            document.getElementById('orderInfo').textContent = message;
+            document.getElementById('submitBtn').disabled = true;
+        }
         
-        // Автосохранение при изменении
-        document.getElementById('emailInput').addEventListener('input', (e) => {
-            document.getElementById('emailError').style.display = 'none';
-        });
+        // Запускаем инициализацию
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
