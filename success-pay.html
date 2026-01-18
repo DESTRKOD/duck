@@ -1,89 +1,124 @@
+<!-- success-pay.html -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>Успешная оплата</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
-
-<style>
-html, body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: linear-gradient(180deg, #0b3c91 0%, #1565c0 55%, #42a5f5 100%);
-}
-
-.screen {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  opacity: 0;
-  transform: translateY(16px);
-  pointer-events: none;
-  transition: opacity .35s ease, transform .35s ease;
-}
-
-.screen.active {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-.sticker {
-  width: 260px;
-  height: 260px;
-}
-
-.title {
-  margin-top: 14px;
-  font-size: 30px;
-  font-weight: 800;
-  color: #fff;
-  text-align: center;
-}
-
-.order {
-  margin-top: 6px;
-  font-size: 16px;
-  font-weight: 700;
-  color: rgba(255,255,255,.85);
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оплата успешна - Duck Shop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #0b3c91 0%, #1565c0 55%, #42a5f5 100%);
+            margin: 0;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        .success-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        .order-id {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-family: monospace;
+            margin: 20px 0;
+            display: inline-block;
+        }
+        .loading {
+            margin-top: 30px;
+            font-size: 16px;
+            opacity: 0.8;
+        }
+        .btn {
+            background: white;
+            color: #0b3c91;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
-
 <body>
+    <div class="container">
+        <div class="success-icon">✅</div>
+        <h1>Оплата успешно завершена!</h1>
+        <p>Спасибо за ваш заказ.</p>
+        
+        <div class="order-id" id="orderId">Загружаем информацию...</div>
+        
+        <p>Сейчас вы будете перенаправлены для ввода email...</p>
+        
+        <div class="loading" id="loading">
+            Перенаправление через <span id="countdown">5</span> секунд
+        </div>
+        
+        <button class="btn" onclick="redirectNow()">Перейти сейчас</button>
+    </div>
 
-<div id="success" class="screen">
-  <div id="duckAnim" class="sticker"></div>
-  <div class="title">Успешная оплата!</div>
-  <div class="order" id="order"></div>
-</div>
-
-<script>
-lottie.loadAnimation({
-  container: document.getElementById('duckAnim'),
-  renderer: 'svg',
-  loop: true,
-  autoplay: true,
-  path: 'duck.json'
-});
-
-const order = new URLSearchParams(location.search).get('order');
-if (order) {
-  document.getElementById('order').textContent = 'Заказ № ' + order;
-}
-
-// активация анимации появления — КАК НА САЙТЕ
-requestAnimationFrame(() => {
-  document.getElementById('success').classList.add('active');
-});
-</script>
-
+    <script>
+        // Получаем ID заказа из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('order');
+        
+        function redirectNow() {
+            // Сохраняем заказ и переходим на главную
+            if (orderId) {
+                // Сохраняем в sessionStorage для немедленного использования
+                sessionStorage.setItem('duck_paid_order_id', orderId);
+                sessionStorage.setItem('duck_redirect_to', 'email');
+            }
+            
+            // Переходим на главную страницу
+            window.location.href = 'https://destrkod.github.io/duck/index.html';
+        }
+        
+        if (orderId) {
+            document.getElementById('orderId').textContent = `Заказ №: ${orderId}`;
+            
+            // Автоматическое перенаправление
+            let countdown = 5;
+            const countdownElement = document.getElementById('countdown');
+            const countdownInterval = setInterval(() => {
+                countdown--;
+                countdownElement.textContent = countdown;
+                
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                    redirectNow();
+                }
+            }, 1000);
+        } else {
+            // Если нет orderId, сразу переходим
+            setTimeout(() => {
+                window.location.href = 'https://destrkod.github.io/duck/index.html';
+            }, 3000);
+        }
+    </script>
 </body>
 </html>
